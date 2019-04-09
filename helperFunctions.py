@@ -1,10 +1,10 @@
+# Ryan Soedjak
 from util import *
 import random
 import time
 
-BestPathHolder = {"path":None, "cost":float("inf")}
-
 def setup(inFileName):
+    """Reading input and setting up node distances"""
     coords = []
     nodes = []
     in_ = open(inFileName, "r")
@@ -20,19 +20,23 @@ def setup(inFileName):
             distances.add(coords[i], coords[j])
     return (nodes, distances)
 
-def finish(outFileName):
+def finish(outFileName, starttime, ans):
+    """Writing to out file"""
+    t = time.time()
     out_ = open(outFileName, "w")
     s = ""
-    for n in BestPathHolder["path"]:
+    for n in ans["path"]:
         s += str(n) + " -> "
-    s += str(BestPathHolder["path"][0])
+    s += str(ans["path"][0])
     out_.write(s)
-    out_.write("Cost: " + str(BestPathHolder["cost"]))
+    out_.write("\nCost: %d" %ans["cost"])
     out_.close()
-    print(BestPathHolder["cost"])
-    print("Finish")
+    print("Cost: %d" %ans["cost"])
+    print("Finished in %f seconds" %(t-starttime))
 
-def solve(nodes, distances, timelimit):
+def annealing(nodes, distances, timelimit, ans):
+    """Based on the simulated annealing technique"""
+    startTime = time.time()
     currPath = []
     currCost = 0
     for i in range(len(nodes)):
@@ -40,16 +44,19 @@ def solve(nodes, distances, timelimit):
     random.shuffle(currPath)
     currPath = tuple(currPath)
     currCost = totalDist(currPath, distances)
+
     maxTemperature = timelimit
-    startTime = time.time()
     avgInfo = [0, 0]
     while True:
-        if currCost < BestPathHolder["cost"]:
-            BestPathHolder["path"] = currPath
-            BestPathHolder["cost"] = currCost
-            print(BestPathHolder["cost"])
+        if currCost < ans["cost"]:
+            ans["path"] = currPath
+            ans["cost"] = currCost
+            #print(ans["cost"])
+        t = time.time()
+        if t - startTime > timelimit:
+            break
         newPath, newCost = randomNeighbor(currPath, currCost, distances)
-        temperature = maxTemperature + (startTime - time.time())
+        temperature = maxTemperature + (startTime - t)
         avgInfo[0] = (avgInfo[0] * avgInfo[1]+abs(currCost-newCost))/(avgInfo[1] + 1)
         avgInfo[1] += 1
         if random.random() < chance(currCost, newCost, temperature / maxTemperature, avgInfo[0]):
@@ -57,6 +64,8 @@ def solve(nodes, distances, timelimit):
             currCost = newCost
 
 def randomNeighbor(currPath, currCost, distances):
+    """Helper function for annealing
+        Finds a random neighbor along with its cost"""
     if random.random() > 2.0/len(currPath):
         i = random.randint(0, len(currPath) - 1)
         j = (i + 1)%len(currPath)
@@ -95,45 +104,18 @@ def randomNeighbor(currPath, currCost, distances):
 
         return (tuple(newPath), newCost)
 
-##def randomNeighborSwapRandom(currPath, currCost, distances):
-##    i = random.randint(1, len(currPath) - 1)
-##    j = random.randint(1, len(currPath) - 1)
-##    newPath = list(currPath)
-##    newCost = currCost
-##    if i != j:
-##        temp = newPath[i]
-##        newPath[i] = newPath[j]
-##        newPath[j] = temp
-##        minI = min(i, j)
-##        maxI = max(i, j)
-##        newCost -= distances.get(currPath[minI - 1], currPath[minI])
-##        newCost += distances.get(currPath[minI - 1], currPath[maxI])
-##        newCost -= distances.get(currPath[maxI], currPath[(maxI + 1)%len(currPath)])
-##        newCost += distances.get(currPath[minI], currPath[(maxI + 1)%len(currPath)])
-##        if (maxI - minI != 1):
-##            newCost -= distances.get(currPath[minI], currPath[minI + 1])
-##            newCost += distances.get(currPath[maxI], currPath[minI + 1])
-##            newCost -= distances.get(currPath[maxI - 1], currPath[maxI])
-##            newCost += distances.get(currPath[maxI - 1], currPath[minI])
-##
-##    return (tuple(newPath), newCost)
-
 def chance(currCost, newCost, temps, avg):
+    """Helper function for annealing"""
     if newCost < currCost:
         return 1
     else:
         return math.exp(-(float(newCost)-currCost)/(temps*avg))
 
 def totalDist(currPath, distances):
+    """Computes total cost of a path"""
     currCost = 0
     for i in range(len(currPath)):
         if i > 0:
             currCost += distances.get(currPath[i], currPath[i - 1])
     currCost += distances.get(currPath[0], currPath[-1])
     return currCost
-
-def change():
-    BestPathHolder["path"] = "ASDF"
-
-def get():
-    return BestPathHolder["path"]

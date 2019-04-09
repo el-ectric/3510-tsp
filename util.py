@@ -1,3 +1,4 @@
+# Ryan Soedjak
 import math
 
 class NodeContainer:
