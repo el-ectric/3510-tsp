@@ -3,12 +3,21 @@ import sys
 import time
 from helperFunctions import *
 
+
+#def solve(bound):
 startTime = time.time()
 
 #I/O
 _, inFileName, outFileName, timeLimit = sys.argv
+
+####### testing
+#inFileName = "tsp10000.txt"
+#outFileName = "tour2.txt"
+#timeLimit = 200
+#######
+
 timeLimit = float(timeLimit)
-timeLimit -= 0.005 #taking into account the time needed to write to out file
+timeLimit -= 0.015 #taking into account the time needed to write to out file
 maxTime = startTime + timeLimit
 
 #Computing distances
@@ -22,3 +31,4 @@ annealing(nodes, distances, maxTime, ans)
 
 #Writes to out file
 finish(outFileName, startTime, ans)
+#return ans["cost"]
