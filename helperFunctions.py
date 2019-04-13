@@ -61,7 +61,7 @@ def annealing(nodes, distances, maxTime, ans):
         if currCost < ans["cost"]:
             ans["path"] = currPath
             ans["cost"] = currCost
-            print(ans["cost"])
+            #print(ans["cost"])
 
         #find neighbor
         newPath, newCost = randomNeighbor(currPath, currCost, distances)
