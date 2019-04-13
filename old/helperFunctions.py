@@ -20,27 +20,28 @@ def setup(inFileName):
             distances.add(coords[i], coords[j])
     return (nodes, distances)
 
-def finish(outFileName, startTime, ans):
-    """Writing final answer to out file"""
+def finish(outFileName, starttime, ans):
+    """Writing to out file"""
+    t = time.time()
     out_ = open(outFileName, "w")
     s = ""
     for n in ans["path"]:
-        s += str(n) + ", "
+        s += str(n) + " -> "
     s += str(ans["path"][0])
     out_.write(s)
-    t = time.time()
-    out_.write("\nCost: %d\nFinished in %f seconds" %(ans["cost"], t-startTime))
+    out_.write("\nCost: %d\nFinished in %f seconds" %(ans["cost"], t-starttime))
     out_.close()
     print("Cost: %d" %ans["cost"])
-    print("Finished in %f seconds" %(t-startTime))
+    print("Finished in %f seconds" %(t-starttime))
 
-def annealing(nodes, distances, maxTime, ans):
-    """TSP algorithm based on simulated annealing"""
+def annealing(nodes, distances, timelimit, ans):
+    """Based on the simulated annealing technique"""
+    startTime = time.time()
 
     #The current tour we're considering and its cost
     currPath = []
     currCost = 0
-
+    
     #Picking a random starting tour
     for i in range(len(nodes)):
         currPath.append(nodes[i])
@@ -48,30 +49,21 @@ def annealing(nodes, distances, maxTime, ans):
     currPath = tuple(currPath)
     currCost = totalDist(currPath, distances)
 
-    startingAnnealingTime = time.time()
-    maxTemperature = maxTime - startingAnnealingTime
+    maxTemperature = timelimit
     avgInfo = [0, 0]
     while True:
-        #check for time up
-        t = time.time()
-        if t > maxTime:
-            break
-        
-        #check for better path
         if currCost < ans["cost"]:
             ans["path"] = currPath
             ans["cost"] = currCost
             print(ans["cost"])
-
-        #find neighbor
+        t = time.time()
+        if t - startTime > timelimit:
+            break
         newPath, newCost = randomNeighbor(currPath, currCost, distances)
-        currTemperature = maxTemperature - (t - startingAnnealingTime)
-
+        temperature = maxTemperature + (startTime - t)
         avgInfo[0] = (avgInfo[0] * avgInfo[1]+abs(currCost-newCost))/(avgInfo[1] + 1)
         avgInfo[1] += 1
-
-        #move to new path with some probability
-        if random.random() < chance(currCost, newCost, currTemperature, maxTemperature, avgInfo[0]):
+        if random.random() < chance(currCost, newCost, temperature / maxTemperature, avgInfo[0]):
             currPath = newPath
             currCost = newCost
 
@@ -116,13 +108,10 @@ def randomNeighbor(currPath, currCost, distances):
 
         return (tuple(newPath), newCost)
 
-def chance(currCost, newCost, currTemperature, maxTemperature, avg):
+def chance(currCost, newCost, temps, avg):
     """Helper function for annealing"""
-    temps = currTemperature / maxTemperature
     if newCost < currCost:
         return 1
-    if temps < 0.0001:
-        return 0
     else:
         return math.exp(-(float(newCost)-currCost)/(temps*avg))
 

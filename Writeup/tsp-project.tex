@@ -1,0 +1,77 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath,amsthm,amssymb,amsfonts,color,wrapfig,floatflt,listings,fancyhdr,framed,lastpage,framed,multirow, hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{asymptote}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+\usepackage{CJKutf8}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={},
+	%\small\ttfamily
+	numbers=none,
+	commentstyle=\color{dkgreen},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+	mathescape=true,
+	%frame=,
+	keywordstyle=\color{black}\bfseries,
+	keywords={,input, output, return, datatype, function, in, if, else, foreach, for, each, while, begin, end, :, greedyMST, hasCycle,}
+}
+
+\newtheorem*{lemma}{Lemma}
+
+% FONT --------------------------
+\usepackage{pxfonts}
+\usepackage[T1]{fontenc}
+%\usepackage[no-math]{fontspec}
+%\setmainfont{Comic Sans MS}
+\pagestyle{fancy}
+
+\setlength\hoffset{0in}
+\setlength\voffset{-.3in}
+\setlength\headsep{0.2in}
+\setlength\topmargin{0.0in}
+\setlength\textheight{8.5in}
+\setlength\oddsidemargin{0in}
+\setlength\evensidemargin{0in}
+\setlength\textwidth{6.5in}
+\setlength\headheight{26pt}
+\setlength\headwidth{6.5in}
+
+\pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\problemNumber}{}
+\newcommand{\theDate}{}
+%%%%%%%%%%%%%%%%%%%%%
+
+
+\lhead{ Ryan Soedjak}
+\chead{ \large\bf CS 3510}
+\rhead{ TSP Project\\4/19/19 }
+
+\lfoot{  }
+\cfoot{ \thepage }
+\rfoot{  }
+
+
+\begin{document}
+The algorithm implemented is the simulated annealing 
+\end{document}
