@@ -36,7 +36,7 @@ def finish(outFileName, startTime, ans):
 def annealing(nodes, distances, maxTime, ans):
     """TSP algorithm based on simulated annealing"""
 
-    #The current tour we're considering and its cost
+    #The current tour and its cost
     currPath = []
     currCost = 0
 
@@ -44,14 +44,14 @@ def annealing(nodes, distances, maxTime, ans):
     for i in range(len(nodes)):
         currPath.append(nodes[i])
     random.shuffle(currPath)
-    #currPath = tuple(currPath)
     currCost = totalDist(currPath, distances)
 
     startingAnnealingTime = time.time()
     maxTemperature = maxTime - startingAnnealingTime + 0.05
-    avgInfo = [0, 0]
+    #avgInfo = [0, 0]
+    avg = 0
     while True:
-        #check for time up
+        #check if time is up
         t = time.time()
         if t > maxTime:
             break
@@ -62,22 +62,35 @@ def annealing(nodes, distances, maxTime, ans):
             ans["cost"] = currCost
             #print(ans["cost"])
 
-        #find neighbor
-        newPath, newCost = randomNeighbor(currPath, currCost, distances)
+        #try a neighbor
+        skel = randomNeighborSkeleton(currPath, currCost, distances)
+        if skel[0] == 1:
+            i = skel[1]
+            j = skel[2]
+            newCost = skel[3]
+        else:
+            i = skel[1]
+            newCost = skel[2]
+
         currTemperature = maxTemperature - (t - startingAnnealingTime)
 
-        #if avgInfo[1] < 5000:
-        avgInfo[0] = (avgInfo[0] * avgInfo[1]+abs(currCost-newCost))/(avgInfo[1] + 1)
-        avgInfo[1] += 1
+        #avgInfo[0] = (avgInfo[0] * avgInfo[1]+abs(currCost-newCost))/(avgInfo[1] + 1)
+        #avgInfo[1] += 1
 
-        #move to new path with some probability
-        if random.random() < chance(currCost, newCost, currTemperature, maxTemperature, avgInfo[0]):
-            currPath = newPath
+        avg = (avg * 1000 + abs(currCost-newCost)) / 1001
+
+        #move to neighbor with some probability
+        if random.random() < chance(currCost, newCost, currTemperature, maxTemperature, avg):
+            if skel[0] == 1:
+                contiguousFlip(currPath, i, j)
+            else:
+                consecutiveFlip(currPath, i)
             currCost = newCost
 
 def randomNeighborSkeleton(currPath, currCost, distances):
+    """Picks a neighbor and computes its cost. Doesn't actually return the neighbor"""
     r = random.random()
-    if 0 <= r < 0.3:
+    if 0 <= r < 0.37:
         # flip a contiguous chunk of the path
         i = random.randint(0, len(currPath) - 1)
         j = random.randint(0, len(currPath) - 1)
@@ -87,7 +100,8 @@ def randomNeighborSkeleton(currPath, currCost, distances):
             newCost += distances.get(currPath[(i - 1)%len(currPath)], currPath[j])
             newCost -= distances.get(currPath[j], currPath[(j + 1)%len(currPath)])
             newCost += distances.get(currPath[i], currPath[(j + 1)%len(currPath)])
-        return (1, i, j, newCost)
+            return (1, i, j, newCost)
+        return (1, 0, 0, newCost)
     else:
         #swap 2 consecutive elements of a path
         i = random.randint(0, len(currPath) - 1)
@@ -100,6 +114,7 @@ def randomNeighborSkeleton(currPath, currCost, distances):
         return (2, i, newCost)
 
 def contiguousFlip(currPath, i, j):
+    """Flips indices i to j in currPath"""
     if i != j and (i+1)%len(currPath)!=j and (j+1)%len(currPath)!=i:
         iP = i
         jP = j
@@ -115,15 +130,15 @@ def contiguousFlip(currPath, i, j):
             jP = (jP - 1)%len(currPath)
 
 def consecutiveFlip(currPath, i):
+    """Flips elements at indices i and i+1 in currPath"""
     j = (i + 1)%len(currPath)
-    currPath = list(currPath)
     temp = currPath[i]
     currPath[i] = currPath[j]
     currPath[j] = temp
 
-def randomNeighbor(currPath, currCost, distances):
-    """Helper function for annealing
-        Finds a random neighbor along with its cost"""
+"""def randomNeighbor(currPath, currCost, distances):
+    Helper function for annealing
+        Finds a random neighbor along with its cost
     r = random.random()
     if 0 <= r < 0.3:
         # flip a contiguous chunk of the path
@@ -163,7 +178,7 @@ def randomNeighbor(currPath, currCost, distances):
         newCost -= distances.get(currPath[j], currPath[(j + 1)%len(currPath)])
         newCost += distances.get(currPath[i], currPath[(j + 1)%len(currPath)])
         return (tuple(newPath), newCost)
-    """else:
+    else:
         #swap 2 random elements
         i = random.randint(1, len(currPath) - 1)
         j = random.randint(1, len(currPath) - 1)
@@ -201,8 +216,7 @@ def chance(currCost, newCost, currTemperature, maxTemperature, avg):
 def totalDist(currPath, distances):
     """Computes total cost of a path"""
     currCost = 0
-    for i in range(len(currPath)):
-        if i > 0:
-            currCost += distances.get(currPath[i], currPath[i - 1])
+    for i in range(1, len(currPath)):
+        currCost += distances.get(currPath[i], currPath[i - 1])
     currCost += distances.get(currPath[0], currPath[-1])
     return currCost

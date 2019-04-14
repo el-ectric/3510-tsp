@@ -13,7 +13,7 @@ _, inFileName, outFileName, timeLimit = sys.argv
 ####### testing
 #inFileName = "tsp10000.txt"
 #outFileName = "tour2.txt"
-#timeLimit = 200
+#timeLimit = 180
 #######
 
 timeLimit = float(timeLimit)
@@ -31,4 +31,5 @@ annealing(nodes, distances, maxTime, ans)
 
 #Writes to out file
 finish(outFileName, startTime, ans)
+
 #return ans["cost"]
