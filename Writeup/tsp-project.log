@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.3.4)  12 APR 2019 12:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.3.4)  15 APR 2019 14:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -976,33 +976,52 @@ LaTeX Info: Redefining \nameref on input line 75.
 \@outlinefile=\write5
 \openout5 = `tsp-project.out'.
 
- 
+LaTeX Font Info:    Try loading font information for OT1+pxr on input line 78.
+ (c:/texlive/2017/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
+File: ot1pxr.fd 2000/12/14 v1.0
+)
+LaTeX Font Info:    Try loading font information for U+pxsya on input line 78.
+ (c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsya.fd
+File: upxsya.fd 2000/12/14 v1.0
+)
+LaTeX Font Info:    Try loading font information for U+pxsyb on input line 78.
+ (c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsyb.fd
+File: utxsyb.fd 2000/12/14 v1.0
+)
+LaTeX Font Info:    Try loading font information for U+pxmia on input line 78.
+ (c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxmia.fd
+File: upxmia.fd 2000/12/14 v1.0
+)
+LaTeX Font Info:    Try loading font information for U+pxsyc on input line 78.
+ (c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsyc.fd
+File: upxsyc.fd 2000/12/14 v1.0
+) 
 AED: lastpage setting LastPage
 [1{c:/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 77.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 77.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 94.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 94.
  (c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 77.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 77.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 94.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 94.
 Package rerunfilecheck Info: File `tsp-project.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 77.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 94.
  ) 
 Here is how much of TeX's memory you used:
- 10352 strings out of 492982
- 140332 string characters out of 6136241
- 270494 words of memory out of 5000000
- 13719 multiletter control sequences out of 15000+600000
- 9189 words of font info for 23 fonts, out of 8000000 for 9000
+ 10809 strings out of 492982
+ 144866 string characters out of 6136241
+ 291494 words of memory out of 5000000
+ 14128 multiletter control sequences out of 15000+600000
+ 26553 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,11n,43p,326b,347s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2017/texmf-dist/fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on "c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.pdf" (1 page, 28058 bytes).
+ 41i,11n,43p,326b,1099s stack positions out of 5000i,500n,10000p,200000b,80000s
+{c:/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2017/texmf-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on "c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.pdf" (1 page, 49900 bytes).
 PDF statistics:
- 26 PDF objects out of 1000 (max. 8388607)
- 19 compressed objects within 1 object stream
- 2 named destinations out of 1000 (max. 500000)
+ 56 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
+ 17 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

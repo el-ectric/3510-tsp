@@ -24,17 +24,32 @@ def finish(outFileName, startTime, ans):
     """Writing final answer to out file"""
     out_ = open(outFileName, "w")
     out_.write("%d\n" %ans["cost"])
-    s = ""
-    for n in ans["path"]:
-        s += str(n) + " "
-    s += str(ans["path"][0])
-    out_.write(s)
+    if len(ans["path"]) > 0:
+        s = ""
+        for n in ans["path"]:
+            s += str(n) + " "
+        s += str(ans["path"][0])
+        out_.write(s)
     out_.close()
     print("Cost: %d" %ans["cost"])
     print("Finished in %f seconds" %(time.time()-startTime))
 
 def annealing(nodes, distances, maxTime, ans):
     """TSP algorithm based on simulated annealing"""
+
+    #edge cases
+    if len(nodes) == 0:
+        ans["path"] = []
+        ans["cost"] = 0
+        return
+    if len(nodes) == 1:
+        ans["path"] = nodes
+        ans["cost"] = 0
+        return
+    if len(nodes) == 2:
+        ans["path"] = nodes
+        ans["cost"] = totalDist(nodes, distances)
+        return
 
     #The current tour and its cost
     currPath = []
@@ -48,7 +63,6 @@ def annealing(nodes, distances, maxTime, ans):
 
     startingAnnealingTime = time.time()
     maxTemperature = maxTime - startingAnnealingTime + 0.05
-    #avgInfo = [0, 0]
     avg = 0
     while True:
         #check if time is up
@@ -73,9 +87,6 @@ def annealing(nodes, distances, maxTime, ans):
             newCost = skel[2]
 
         currTemperature = maxTemperature - (t - startingAnnealingTime)
-
-        #avgInfo[0] = (avgInfo[0] * avgInfo[1]+abs(currCost-newCost))/(avgInfo[1] + 1)
-        #avgInfo[1] += 1
 
         avg = (avg * 1000 + abs(currCost-newCost)) / 1001
 
@@ -135,6 +146,26 @@ def consecutiveFlip(currPath, i):
     temp = currPath[i]
     currPath[i] = currPath[j]
     currPath[j] = temp
+    
+def chance(currCost, newCost, currTemperature, maxTemperature, avg):
+    """Helper function for annealing"""
+    temps = currTemperature / maxTemperature
+    if newCost <= currCost:
+        return 1
+    try:
+        p = math.exp(-16*(newCost-currCost)/(temps * avg))
+    except:
+        p = 0
+    return p
+
+def totalDist(currPath, distances):
+    """Computes total cost of a path"""
+    currCost = 0
+    for i in range(1, len(currPath)):
+        currCost += distances.get(currPath[i], currPath[i - 1])
+    currCost += distances.get(currPath[0], currPath[-1])
+    return currCost
+
 
 """def randomNeighbor(currPath, currCost, distances):
     Helper function for annealing
@@ -201,22 +232,3 @@ def consecutiveFlip(currPath, i):
                 newCost += distances.get(currPath[maxI - 1], currPath[minI])
 
         return (tuple(newPath), newCost)"""
-
-def chance(currCost, newCost, currTemperature, maxTemperature, avg):
-    """Helper function for annealing"""
-    temps = currTemperature / maxTemperature
-    if newCost < currCost:
-        return 1
-    if temps < 0.0001:
-        #print("hi")
-        return 0
-    else:
-        return math.exp(-(float(newCost)-currCost)/(temps*avg))
-
-def totalDist(currPath, distances):
-    """Computes total cost of a path"""
-    currCost = 0
-    for i in range(1, len(currPath)):
-        currCost += distances.get(currPath[i], currPath[i - 1])
-    currCost += distances.get(currPath[0], currPath[-1])
-    return currCost

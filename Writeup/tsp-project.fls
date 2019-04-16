@@ -169,6 +169,52 @@ INPUT c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/pr
 INPUT c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.out
 OUTPUT c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.out
 OUTPUT c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.pdf
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxr.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxr.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxr.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxmi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxmi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxmi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsy.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsy.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsy.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxex.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxex.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxex.tfm
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsya.fd
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsya.fd
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsya.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsya.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsya.tfm
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsyb.fd
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsyb.fd
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsyb.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsyb.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsyb.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxi.tfm
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxmia.fd
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxmia.fd
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxmia.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxmia.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxmia.tfm
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsyc.fd
+INPUT c:/texlive/2017/texmf-dist/tex/latex/pxfonts/upxsyc.fd
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsyc.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsyc.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxsyc.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxexa.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxexa.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/pxexa.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xr.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xr.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xb.tfm
 INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xr.tfm
 INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/p1xb.tfm
 INPUT c:/texlive/2017/texmf-dist/fonts/vf/public/pxfonts/p1xr.vf
@@ -178,10 +224,25 @@ INPUT c:/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT c:/texlive/2017/texmf-dist/fonts/vf/public/pxfonts/p1xb.vf
 INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxpplb.tfm
 INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxb.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/vf/public/pxfonts/pxmi.vf
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxmi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxpplri.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/vf/public/pxfonts/p1xi.vf
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxi.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/vf/public/pxfonts/p1xb.vf
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxpplb.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxb.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/vf/public/pxfonts/pxr.vf
+INPUT c:/texlive/2017/texmf-dist/fonts/vf/public/pxfonts/pxr.vf
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxpplr.tfm
+INPUT c:/texlive/2017/texmf-dist/fonts/tfm/public/pxfonts/rpxr.tfm
 INPUT c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.aux
 INPUT c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.out
 INPUT c:/Users/soedj/Google Drive/School/Georgia Tech/2.2 2019 Spring/CS 3510/project/Writeup/tsp-project.out
 INPUT c:/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc
+INPUT c:/texlive/2017/texmf-dist/fonts/type1/public/pxfonts/pxsy.pfb
+INPUT c:/texlive/2017/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb
 INPUT c:/texlive/2017/texmf-dist/fonts/type1/public/pxfonts/rpxr.pfb
 INPUT c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb
 INPUT c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb
+INPUT c:/texlive/2017/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb

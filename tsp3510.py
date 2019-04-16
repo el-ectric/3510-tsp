@@ -11,8 +11,8 @@ startTime = time.time()
 _, inFileName, outFileName, timeLimit = sys.argv
 
 ####### testing
-#inFileName = "tsp10000.txt"
-#outFileName = "tour2.txt"
+#inFileName = "china.txt"
+#outFileName = "out1.txt"
 #timeLimit = 180
 #######
 

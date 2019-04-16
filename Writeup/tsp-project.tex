@@ -64,8 +64,8 @@
 
 
 \lhead{ Ryan Soedjak}
-\chead{ \large\bf CS 3510}
-\rhead{ TSP Project\\4/19/19 }
+\chead{ \large\bf TSP Project}
+\rhead{ CS 3510\\4/19/19 }
 
 \lfoot{  }
 \cfoot{ \thepage }
@@ -73,5 +73,22 @@
 
 
 \begin{document}
-The algorithm implemented is the simulated annealing 
+The TSP algorithm implemented is the simulated annealing 
+\begin{lstlisting}
+annealing(graph $G$, time limit $t$):
+	$\color{dkgreen}\textit{Input: a complete graph }G$
+	$\color{dkgreen}\textit{Input: the time limit }t$
+	$\color{dkgreen}\textit{Output: A cycle }G$
+	$\text{sortedEdgeList}\gets\text{edges of }G$ $\text{in}$ sorted order by weight
+	for edge $e$ in sortedEdgeList $\text{in}$ decreasing order:
+		if hasCycle($G$, $e$):
+			search through the adjacency list of $G$ and remove $e$
+	return $G$
+	
+hasCycle(graph $G$, edge $e$):
+	$\color{dkgreen}\textit{Input: an undirected connected graph }G=(V,E)\textit{, edge }e=(v_1,v_2)\in E$
+	$\color{dkgreen}\textit{Output: true if }G\textit{ has a cycle with edge }e\textit{, false otherwise}$
+	This runs DFS on $G'=(V,E-\{e\})$ starting at $v_1$ and sees $\text{if}$ it ever reaches $v_2$
+	
+\end{lstlisting}
 \end{document}
