@@ -32,7 +32,7 @@
 	mathescape=true,
 	%frame=,
 	keywordstyle=\color{black}\bfseries,
-	keywords={,input, output, return, datatype, function, in, if, else, foreach, for, each, while, begin, end, :, greedyMST, hasCycle,}
+	keywords={,input, output, return, datatype, function, in, if, else, foreach, for, each, while, begin, end, :,simulated_annealing,get_chance,get_neighbor,get_temperature}
 }
 
 \newtheorem*{lemma}{Lemma}
@@ -73,22 +73,76 @@
 
 
 \begin{document}
-The TSP algorithm implemented is the simulated annealing 
+The TSP algorithm I implemented is a simulated annealing algorithm adjusted to work well with the TSP problem. Pseudocode is presented on the last page. Most of the ideas presented here are taken from the Wikipedia article on simulated annealing.
+
+The basic idea behind simulated annealing is the following:
+\begin{enumerate}
+\item The \textit{current state} considered starts as an arbitrary tour
+\item Get a potential \textit{next state} based on the current state 
+\item Calculate the current \textit{temperature} based on time elapsed so far and the total time limit 
+\item Calculate the probability that we will move to the next state based on the two states and current temperature
+\item Move to the new state with the above probability
+\item Repeat steps 2-5 until time is up, keeping track of the best path encountered
+\end{enumerate}
+
+Steps 2-4 are implemented in the \textbf{get\_neighbor}, \textbf{get\_temperature}, and \textbf{get\_chance} functions in the pseudocode.
+\begin{framed}
+\noindent The \textbf{get\_neighbor} function takes in a current state and generates a new state by doing one of two things:
+\begin{enumerate}
+\item Swap two random consecutive elements of the current state
+\item Take a random block of continuous nodes in the current state and reverse them
+\end{enumerate}
+Option 1 is chosen with some constant probability $p$. The idea behind this function is to create a new state that has cost close to that of the current state. In either option, only 2 edges change. The reason why there are two different options is to minimize the chance that the algorithm will get stuck in a local minima state.
+\end{framed}
+\begin{framed}
+\noindent The \textbf{get\_temperature} function takes in the amount of time elapsed $t_\text{elapsed}$ and the total time limit $t$ and returns a temperature between 0 and 1. The formula I used was linear in terms of $t_\text{elapsed}$:
+\[\text{current temperature}=1-\frac{t_\text{elapsed}}{t}\]
+As $t_\text{elapsed}$ increases, the temperature decreases. More on this in the \textbf{get\_chance} description.
+\end{framed}
+\begin{framed}
+\noindent The \textbf{get\_chance} function takes in the current state, potential next state, and temperature, and returns the probability that it will move to the next state. The formula used is
+\[\text{chance}=\begin{cases}1\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\text{ if }\Delta\text{cost}<0\\
+x=\exp\left(-c\cdot\frac{\Delta\text{cost}}{\text{avg of all }\Delta\text{cost values calculated so far}}\cdot\frac1{\text{temperature}}\right)\;\;\text{ otherwise}\end{cases}\]
+where $\Delta\text{cost} = (\text{cost of potential new state})-(\text{cost of current state})$ and $c$ is some constant.
+
+If the new state has lower cost, then the probability is 1. Otherwise, the probability is $x$ where $x$ decreases as temperature decreases and increases as $\Delta$cost decreases.
+\end{framed}
+
+The gritty implementation details and optimizations removed from the pseudocode for clarity. Note that there are several hardcoded constants In particular, $p=0.37$ and $c=8$ in the final program. These were chosen by running the program repeatedly on tests from \url{http://www.math.uwaterloo.ca/tsp/data/index.html} and choosing the values that performed well.
 \begin{lstlisting}
-annealing(graph $G$, time limit $t$):
+simulated_annealing(graph $G$, time limit $t$):
 	$\color{dkgreen}\textit{Input: a complete graph }G$
 	$\color{dkgreen}\textit{Input: the time limit }t$
-	$\color{dkgreen}\textit{Output: A cycle }G$
-	$\text{sortedEdgeList}\gets\text{edges of }G$ $\text{in}$ sorted order by weight
-	for edge $e$ in sortedEdgeList $\text{in}$ decreasing order:
-		if hasCycle($G$, $e$):
-			search through the adjacency list of $G$ and remove $e$
-	return $G$
-	
-hasCycle(graph $G$, edge $e$):
-	$\color{dkgreen}\textit{Input: an undirected connected graph }G=(V,E)\textit{, edge }e=(v_1,v_2)\in E$
-	$\color{dkgreen}\textit{Output: true if }G\textit{ has a cycle with edge }e\textit{, false otherwise}$
-	This runs DFS on $G'=(V,E-\{e\})$ starting at $v_1$ and sees $\text{if}$ it ever reaches $v_2$
-	
+	$\color{dkgreen}\textit{Output: A cycle and its cost}$
+	best_state, best_cost $\gets$ null, $\infty$
+	curr_state $\gets$ arbitrary cycle $\text{i}$n $G$
+	while time not up:
+		if curr_state costs less than best_state:
+			best_state $\gets$ curr_state
+		new_state $\gets$ get_neighbor(curr_state)
+		temperature $\gets$ get_temperature(time elapsed, $t$)
+		with probability get_chance(curr_state, new_state, temperature):
+			curr_state $\gets$ next_state
+	return best_state and its cost
+
+$\color{dkgreen}\text{Helper methods:}$
+
+get_neighbor(curr_state):
+	with probability 0.37:
+		flip a contiguous chuck of the curr_state
+	otherwise:
+		swap 2 consecutive elements $\text{i}$n the curr_state
+	return the resulting state
+
+get_temperature(time elapsed):
+	return $1 - (\text{current time elapsed})/t$
+
+get_chance(curr_state, new_state, temperature):
+	$\Delta$cost $\gets$ cost of new_state - cost of curr_state
+	if $\Delta$cost < 0:
+		return 1
+	else:
+		return $\exp\left(-8\cdot\frac{\Delta\text{cost}}{\text{avg of all }\Delta\text{cost values calculated so far}}\cdot\frac1{\text{temperature}}\right)$
+
 \end{lstlisting}
 \end{document}

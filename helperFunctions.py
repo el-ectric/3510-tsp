@@ -153,7 +153,7 @@ def chance(currCost, newCost, currTemperature, maxTemperature, avg):
     if newCost <= currCost:
         return 1
     try:
-        p = math.exp(-16*(newCost-currCost)/(temps * avg))
+        p = math.exp(-8*(newCost-currCost)/(temps * avg))
     except:
         p = 0
     return p
