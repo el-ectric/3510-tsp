@@ -1,246 +1,162 @@
-# Ryan Soedjak, Nick Fratto
-from util import *
-import random
-import time
+\documentclass[11pt,letterpaper]{article}
 
-def setup(inFileName):
-    """Reading input and setting up node distances"""
-    coords = []
-    nodes = []
-    in_ = open(inFileName, "r")
-    for line in in_:
-        nodeID, xCoord, yCoord = line.split()
-        coords.append((int(nodeID), (float(xCoord), float(yCoord))))
-        nodes.append(int(nodeID))
-    in_.close()
+\usepackage{amsmath,amsthm,amssymb,amsfonts,color,wrapfig,floatflt,listings,fancyhdr,framed,lastpage,framed,multirow, hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{asymptote}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+\usepackage{CJKutf8}
 
-    distances = NodeContainer()
-    for i in range(len(coords) - 1):
-        for j in range(i + 1, len(coords)):
-            distances.add(coords[i], coords[j])
-    return (nodes, distances)
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
 
-def finish(outFileName, startTime, ans):
-    """Writing final answer to out file"""
-    out_ = open(outFileName, "w")
-    out_.write("%d\n" %ans["cost"])
-    if len(ans["path"]) > 0:
-        s = ""
-        for n in ans["path"]:
-            s += str(n) + " "
-        s += str(ans["path"][0])
-        out_.write(s)
-    out_.close()
-    print("Cost: %d" %ans["cost"])
-    print("Finished in %f seconds" %(time.time()-startTime))
+\lstset{frame=tb,
+	language=java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={},
+	%\small\ttfamily
+	numbers=none,
+	commentstyle=\color{dkgreen},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+	mathescape=true,
+	%frame=,
+	keywordstyle=\color{black}\bfseries,
+	keywords={,input, output, return, datatype, function, in, if, else, foreach, for, each, while, begin, end, :,simulated_annealing,get_chance,get_neighbor,get_temperature}
+}
 
-def annealing(nodes, distances, maxTime, ans):
-    """TSP algorithm based on simulated annealing"""
+\newtheorem*{lemma}{Lemma}
 
-    #edge cases
-    if len(nodes) == 0:
-        ans["path"] = []
-        ans["cost"] = 0
-        return
-    if len(nodes) == 1:
-        ans["path"] = nodes
-        ans["cost"] = 0
-        return
-    if len(nodes) == 2:
-        ans["path"] = nodes
-        ans["cost"] = totalDist(nodes, distances)
-        return
+% FONT --------------------------
+\usepackage{pxfonts}
+\usepackage[T1]{fontenc}
+%\usepackage[no-math]{fontspec}
+%\setmainfont{Comic Sans MS}
+\pagestyle{fancy}
 
-    #Picking a starting tour
-    currPath = generateStartingTour(nodes, distances)
-    currCost = totalDist(currPath, distances)
+\setlength\hoffset{0in}
+\setlength\voffset{-.3in}
+\setlength\headsep{0.2in}
+\setlength\topmargin{0.0in}
+\setlength\textheight{8.5in}
+\setlength\oddsidemargin{0in}
+\setlength\evensidemargin{0in}
+\setlength\textwidth{6.5in}
+\setlength\headheight{26pt}
+\setlength\headwidth{6.5in}
 
-    startingAnnealingTime = time.time()
-    maxTemperature = maxTime - startingAnnealingTime + 0.05
-    avg = 0
-    while True:
-        #check if time is up
-        t = time.time()
-        if t > maxTime:
-            break
-        
-        #check if current path is best path
-        if currCost < ans["cost"]:
-            ans["path"] = currPath
-            ans["cost"] = currCost
-            #print(ans["cost"])
+\pagestyle{fancy}
 
-        #try a neighbor
-        skel = randomNeighborSkeleton(currPath, currCost, distances)
-        if skel[0] == 1:
-            i = skel[1]
-            j = skel[2]
-            newCost = skel[3]
-        else:
-            i = skel[1]
-            newCost = skel[2]
+%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\problemNumber}{}
+\newcommand{\theDate}{}
+%%%%%%%%%%%%%%%%%%%%%
 
-        currTemperature = maxTemperature - (t - startingAnnealingTime)
 
-        avg = (avg * 1000 + abs(currCost-newCost)) / 1001
+\lhead{ Ryan Soedjak\\Nick Fratto}
+\chead{ \large\bf TSP Project}
+\rhead{ CS 3510\\4/19/19 }
 
-        #move to neighbor with some probability
-        if random.random() < chance(currCost, newCost, currTemperature, maxTemperature, avg):
-            if skel[0] == 1:
-                contiguousFlip(currPath, i, j)
-            else:
-                consecutiveFlip(currPath, i)
-            currCost = newCost
+\lfoot{  }
+\cfoot{ \thepage }
+\rfoot{  }
 
-def randomNeighborSkeleton(currPath, currCost, distances):
-    """Picks a neighbor and computes its cost. Doesn't actually return the neighbor"""
-    r = random.random()
-    if 0 <= r < 0.3:
-        # flip a contiguous chunk of the path
-        i = random.randint(0, len(currPath) - 1)
-        j = random.randint(0, len(currPath) - 1)
-        newCost = currCost
-        if i != j and (i+1)%len(currPath)!=j and (j+1)%len(currPath)!=i:
-            newCost -= distances.get(currPath[(i - 1)%len(currPath)], currPath[i])
-            newCost += distances.get(currPath[(i - 1)%len(currPath)], currPath[j])
-            newCost -= distances.get(currPath[j], currPath[(j + 1)%len(currPath)])
-            newCost += distances.get(currPath[i], currPath[(j + 1)%len(currPath)])
-            return (1, i, j, newCost)
-        return (1, 0, 0, newCost)
-    else:
-        #swap 2 consecutive elements of a path
-        i = random.randint(0, len(currPath) - 1)
-        j = (i + 1)%len(currPath)
-        newCost = currCost
-        newCost -= distances.get(currPath[(i - 1)%len(currPath)], currPath[i])
-        newCost += distances.get(currPath[(i - 1)%len(currPath)], currPath[j])
-        newCost -= distances.get(currPath[j], currPath[(j + 1)%len(currPath)])
-        newCost += distances.get(currPath[i], currPath[(j + 1)%len(currPath)])
-        return (2, i, newCost)
 
-def contiguousFlip(currPath, i, j):
-    """Flips indices i to j in currPath"""
-    if i != j and (i+1)%len(currPath)!=j and (j+1)%len(currPath)!=i:
-        iP = i
-        jP = j
-        if (i < j):
-            maxx=(j-i+1)//2
-        else:
-            maxx=(j+1+len(currPath)-i)//2
-        for _ in range(maxx):
-            temp = currPath[iP]
-            currPath[iP] = currPath[jP]
-            currPath[jP] = temp
-            iP = (iP + 1)%len(currPath)
-            jP = (jP - 1)%len(currPath)
+\begin{document}
+The TSP algorithm we implemented is a simulated annealing algorithm adjusted to work well with the TSP problem. Pseudocode is presented on the last page. Most of the ideas presented here are taken from the Wikipedia article on simulated annealing. We also included an optimization based on the MST concept mentioned in class on April 19.
 
-def consecutiveFlip(currPath, i):
-    """Flips elements at indices i and i+1 in currPath"""
-    j = (i + 1)%len(currPath)
-    temp = currPath[i]
-    currPath[i] = currPath[j]
-    currPath[j] = temp
-    
-def chance(currCost, newCost, currTemperature, maxTemperature, avg):
-    """Helper function for annealing"""
-    temps = currTemperature / maxTemperature
-    if newCost <= currCost:
-        return 1
-    try:
-        p = math.exp(-8*(newCost-currCost)/(temps * avg))
-    except: #catching divide by 0 errors lol
-        p = 0
-    return p
+The basic idea behind simulated annealing is the following:
+\begin{enumerate}
+\item The \textit{current state} considered starts as a version of Prim's algorithm modified so that the head of the current path will add the vertex closest to it and also makes sure to add the final edge from the end of the path back to the beginning. 
+\item Get a potential \textit{next state} based on the current state 
+\item Calculate the current \textit{temperature} based on time elapsed so far and the total time limit 
+\item Calculate the probability that we will move to the next state based on the two states and current temperature
+\item Move to the new state with the above probability
+\item Repeat steps 2-5 until time is up, keeping track of the best path encountered
+\end{enumerate}
 
-def totalDist(currPath, distances):
-    """Computes total cost of a path"""
-    currCost = 0
-    for i in range(1, len(currPath)):
-        currCost += distances.get(currPath[i], currPath[i - 1])
-    currCost += distances.get(currPath[0], currPath[-1])
-    return currCost
+Steps 2-4 are implemented in the \textbf{get\_neighbor}, \textbf{get\_temperature}, and \textbf{get\_chance} functions in the pseudocode.
+\begin{framed}
+\noindent The \textbf{get\_neighbor} function takes in a current state and generates a new state by doing one of two things:
+\begin{enumerate}
+\item Swap two random consecutive elements of the current state
+\item Take a random block of continuous nodes in the current state and reverse them
+\end{enumerate}
+Option 1 is chosen with some constant probability $p$. The idea behind this function is to create a new state that has cost close to that of the current state. In either option, only 2 edges change. The reason why there are two different options is to minimize the chance that the algorithm will get stuck in a local minima state.
+\end{framed}
+\begin{framed}
+\noindent The \textbf{get\_temperature} function takes in the amount of time elapsed $t_\text{elapsed}$ and the total time limit $t$ and returns a temperature between 0 and 1. The formula I used was linear in terms of $t_\text{elapsed}$:
+\[\text{current temperature}=1-\frac{t_\text{elapsed}}{t}\]
+As $t_\text{elapsed}$ increases, the temperature decreases. More on this in the \textbf{get\_chance} description.
+\end{framed}
+\begin{framed}
+\noindent The \textbf{get\_chance} function takes in the current state, potential next state, and temperature, and returns the probability that it will move to the next state. The formula used is
+\[\text{chance}=\begin{cases}1\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\text{ if }\Delta\text{cost}<0\\
+x=\exp\left(-c\cdot\frac{\Delta\text{cost}}{\text{avg of all }\Delta\text{cost values calculated so far}}\cdot\frac1{\text{temperature}}\right)\;\;\text{ otherwise}\end{cases}\]
+where $\Delta\text{cost} = (\text{cost of potential new state})-(\text{cost of current state})$ and $c$ is some constant.
 
-def generateStartingTour(nodes, distances):
-    start = random.choice(nodes)
-    tour = [start]
-    remaining = set(nodes)
-    remaining.remove(start)
-    while remaining:
-        minDist = float("inf")
-        minNode = None
-        #check min dist from end of tour
-        for n in remaining:
-            dist = distances.get(tour[-1], n)
-            if dist < minDist:
-                minDist = dist
-                minNode = n
-        tour.append(minNode)
-        remaining.remove(minNode)
+If the new state has lower cost, then the probability is 1. Otherwise, the probability is $x$ where $x$ decreases as temperature decreases and increases as $\Delta$cost decreases.
+\end{framed}
+
+The gritty implementation details and optimizations removed from the pseudocode for clarity. Note that there are several hardcoded constants In particular, $p=0.37$ and $c=8$ in the final program. These were chosen by running the program repeatedly on tests from \url{http://www.math.uwaterloo.ca/tsp/data/index.html} and choosing the values that performed well.
+\begin{lstlisting}
+simulated_annealing(graph $G$, time limit $t$):
+	$\color{dkgreen}\textit{Input: a complete graph }G$
+	$\color{dkgreen}\textit{Input: the time limit }t$
+	$\color{dkgreen}\textit{Output: A cycle and its cost}$
+	best_state, best_cost $\gets$ null, $\infty$
+	curr_state $\gets \textbf{get\_starting\_tour}$(nodes)
+	while time not up:
+		if curr_state costs less than best_state:
+			best_state $\gets$ curr_state
+		new_state $\gets$ get_neighbor(curr_state)
+		temperature $\gets$ get_temperature(time elapsed, $t$)
+		with probability get_chance(curr_state, new_state, temperature):
+			curr_state $\gets$ next_state
+	return best_state and its cost
+
+$\color{dkgreen}\text{Helper methods:}$
+
+$\textbf{get\_starting\_tour}$(nodes):
+    tour $\gets$ nodes[0]
+    node_remaining = {nodes - nodes[0]}
+    while nodes_remaining:
+        min_distance = $\infty$
+        closest_neighbor = 0
+        for neighbor in nodes_remaining:
+            if neighbor.distance < min_distance:
+                min_distance $\gets$ neighbor.distance
+                closest_neighbor $\gets$ neighbor
+        tour $\gets$ closest_neighbor
+        node_remaining.remove(closest_neighbor)
     return tour
 
+get_neighbor(curr_state):
+	with probability 0.37:
+		flip a contiguous chunk of the curr_state
+	otherwise:
+		swap 2 consecutive elements $\text{i}$n the curr_state
+	return the resulting state
 
-"""def randomNeighbor(currPath, currCost, distances):
-    Helper function for annealing
-        Finds a random neighbor along with its cost
-    r = random.random()
-    if 0 <= r < 0.3:
-        # flip a contiguous chunk of the path
-        i = random.randint(0, len(currPath) - 1)
-        j = random.randint(0, len(currPath) - 1)
-        newPath = list(currPath)
-        newCost = currCost
-        if i != j and (i+1)%len(currPath)!=j and (j+1)%len(currPath)!=i:
-            newCost -= distances.get(currPath[(i - 1)%len(currPath)], currPath[i])
-            newCost += distances.get(currPath[(i - 1)%len(currPath)], currPath[j])
-            newCost -= distances.get(currPath[j], currPath[(j + 1)%len(currPath)])
-            newCost += distances.get(currPath[i], currPath[(j + 1)%len(currPath)])
-            iP = i
-            jP = j
-            if (i < j):
-                maxx=(j-i+1)//2
-            else:
-                maxx=(j+1+len(currPath)-i)//2
-            for _ in range(maxx):
-                temp = newPath[iP]
-                newPath[iP] = newPath[jP]
-                newPath[jP] = temp
-                iP = (iP + 1)%len(currPath)
-                jP = (jP - 1)%len(currPath)
-        return (tuple(newPath), newCost)
-    else:
-        #swap 2 consecutive elements of a path
-        i = random.randint(0, len(currPath) - 1)
-        j = (i + 1)%len(currPath)
-        newPath = list(currPath)
-        newCost = currCost
-        temp = newPath[i]
-        newPath[i] = newPath[j]
-        newPath[j] = temp
-        newCost -= distances.get(currPath[(i - 1)%len(currPath)], currPath[i])
-        newCost += distances.get(currPath[(i - 1)%len(currPath)], currPath[j])
-        newCost -= distances.get(currPath[j], currPath[(j + 1)%len(currPath)])
-        newCost += distances.get(currPath[i], currPath[(j + 1)%len(currPath)])
-        return (tuple(newPath), newCost)
-    else:
-        #swap 2 random elements
-        i = random.randint(1, len(currPath) - 1)
-        j = random.randint(1, len(currPath) - 1)
-        newPath = list(currPath)
-        newCost = currCost
-        if i != j:
-            temp = newPath[i]
-            newPath[i] = newPath[j]
-            newPath[j] = temp
-            minI = min(i, j)
-            maxI = max(i, j)
-            newCost -= distances.get(currPath[minI - 1], currPath[minI])
-            newCost += distances.get(currPath[minI - 1], currPath[maxI])
-            newCost -= distances.get(currPath[maxI], currPath[(maxI + 1)%len(currPath)])
-            newCost += distances.get(currPath[minI], currPath[(maxI + 1)%len(currPath)])
-            if (maxI - minI != 1):
-                newCost -= distances.get(currPath[minI], currPath[minI + 1])
-                newCost += distances.get(currPath[maxI], currPath[minI + 1])
-                newCost -= distances.get(currPath[maxI - 1], currPath[maxI])
-                newCost += distances.get(currPath[maxI - 1], currPath[minI])
+get_temperature(time elapsed):
+	return $1 - (\text{current time elapsed})/t$
 
-        return (tuple(newPath), newCost)"""
+get_chance(curr_state, new_state, temperature):
+	$\Delta$cost $\gets$ cost of new_state - cost of curr_state
+	if $\Delta$cost < 0:
+		return 1
+	else:
+		return $\exp\left(-8\cdot\frac{\Delta\text{cost}}{\text{avg of all }\Delta\text{cost values calculated so far}}\cdot\frac1{\text{temperature}}\right)$
+
+\end{lstlisting}
+\end{document}
