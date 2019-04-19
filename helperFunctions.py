@@ -51,14 +51,7 @@ def annealing(nodes, distances, maxTime, ans):
         ans["cost"] = totalDist(nodes, distances)
         return
 
-    #The current tour and its cost
-    currPath = []
-    currCost = 0
-
-    #Picking a random starting tour
-    #for i in range(len(nodes)):
-    #    currPath.append(nodes[i])
-    #random.shuffle(currPath)
+    #Picking a starting tour
     currPath = generateStartingTour(nodes, distances)
     currCost = totalDist(currPath, distances)
 
@@ -168,9 +161,10 @@ def totalDist(currPath, distances):
     return currCost
 
 def generateStartingTour(nodes, distances):
-    tour = [nodes[0]]
+    start = random.choice(nodes)
+    tour = [start]
     remaining = set(nodes)
-    remaining.remove(nodes[0])
+    remaining.remove(start)
     while remaining:
         minDist = float("inf")
         minNode = None
