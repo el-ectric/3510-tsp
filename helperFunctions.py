@@ -56,9 +56,10 @@ def annealing(nodes, distances, maxTime, ans):
     currCost = 0
 
     #Picking a random starting tour
-    for i in range(len(nodes)):
-        currPath.append(nodes[i])
-    random.shuffle(currPath)
+    #for i in range(len(nodes)):
+    #    currPath.append(nodes[i])
+    #random.shuffle(currPath)
+    currPath = generateStartingTour(nodes, distances)
     currCost = totalDist(currPath, distances)
 
     startingAnnealingTime = time.time()
@@ -101,7 +102,7 @@ def annealing(nodes, distances, maxTime, ans):
 def randomNeighborSkeleton(currPath, currCost, distances):
     """Picks a neighbor and computes its cost. Doesn't actually return the neighbor"""
     r = random.random()
-    if 0 <= r < 0.37:
+    if 0 <= r < 0.3:
         # flip a contiguous chunk of the path
         i = random.randint(0, len(currPath) - 1)
         j = random.randint(0, len(currPath) - 1)
@@ -153,8 +154,8 @@ def chance(currCost, newCost, currTemperature, maxTemperature, avg):
     if newCost <= currCost:
         return 1
     try:
-        p = math.exp(-8*(newCost-currCost)/(temps * avg))
-    except:
+        p = math.exp(-4*(newCost-currCost)/(temps * avg))
+    except: #catching divide by 0 errors lol
         p = 0
     return p
 
@@ -165,6 +166,22 @@ def totalDist(currPath, distances):
         currCost += distances.get(currPath[i], currPath[i - 1])
     currCost += distances.get(currPath[0], currPath[-1])
     return currCost
+
+def generateStartingTour(nodes, distances):
+    tour = [nodes[0]]
+    remaining = set(nodes)
+    remaining.remove(nodes[0])
+    while remaining:
+        minDist = float("inf")
+        minNode = None
+        #check min dist from end of tour
+        for n in remaining:
+            dist = distances.get(tour[-1], n)
+            if dist < minDist:
+                minDist = dist
+                minNode = n
+        remaining.remove(minNode)
+    return tour
 
 
 """def randomNeighbor(currPath, currCost, distances):
