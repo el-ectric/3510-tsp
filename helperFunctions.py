@@ -180,6 +180,7 @@ def generateStartingTour(nodes, distances):
             if dist < minDist:
                 minDist = dist
                 minNode = n
+        tour.append(minNode)
         remaining.remove(minNode)
     return tour
 
