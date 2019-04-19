@@ -1,4 +1,5 @@
 Ryan Soedjak - rsoedjak@gatech.edu
+Nick Fratto - nfratto3@gatech.edu
 Submitted on 4/19/19
 
 tsp3510.py - main file to run, mostly just calls helper functions

@@ -1,4 +1,4 @@
-# Ryan Soedjak
+# Ryan Soedjak, Nick Fratto
 import sys
 import time
 from helperFunctions import *

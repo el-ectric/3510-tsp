@@ -1,4 +1,4 @@
-# Ryan Soedjak
+# Ryan Soedjak, Nick Fratto
 import math
 
 class NodeContainer:

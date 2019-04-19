@@ -1,4 +1,4 @@
-# Ryan Soedjak
+# Ryan Soedjak, Nick Fratto
 from util import *
 import random
 import time
