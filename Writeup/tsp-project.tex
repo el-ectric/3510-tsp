@@ -73,11 +73,11 @@
 
 
 \begin{document}
-The TSP algorithm we implemented is a simulated annealing algorithm adjusted to work well with the TSP problem. Pseudocode is presented on the last page. Most of the ideas presented here are taken from the Wikipedia article on simulated annealing.
+The TSP algorithm we implemented is a simulated annealing algorithm adjusted to work well with the TSP problem. Pseudocode is presented on the last page. Most of the ideas presented here are taken from the Wikipedia article on simulated annealing. We also included an optimization based on the MST concept mentioned in class on April 19.
 
 The basic idea behind simulated annealing is the following:
 \begin{enumerate}
-\item The \textit{current state} considered starts as an arbitrary tour
+\item The \textit{current state} considered starts as a version of Prim's algorithm modified so that the head of the current path will add the vertex closest to it and also makes sure to add the final edge from the end of the path back to the beginning. 
 \item Get a potential \textit{next state} based on the current state 
 \item Calculate the current \textit{temperature} based on time elapsed so far and the total time limit 
 \item Calculate the probability that we will move to the next state based on the two states and current temperature
@@ -115,7 +115,7 @@ simulated_annealing(graph $G$, time limit $t$):
 	$\color{dkgreen}\textit{Input: the time limit }t$
 	$\color{dkgreen}\textit{Output: A cycle and its cost}$
 	best_state, best_cost $\gets$ null, $\infty$
-	curr_state $\gets$ arbitrary cycle $\text{i}$n $G$
+	curr_state $\gets \textbf{get\_starting\_tour}$(nodes)
 	while time not up:
 		if curr_state costs less than best_state:
 			best_state $\gets$ curr_state
@@ -127,9 +127,23 @@ simulated_annealing(graph $G$, time limit $t$):
 
 $\color{dkgreen}\text{Helper methods:}$
 
+$\textbf{get\_starting\_tour}$(nodes):
+    tour $\gets$ nodes[0]
+    node_remaining = {nodes - nodes[0]}
+    while nodes_remaining:
+        min_distance = $\infty$
+        closest_neighbor = 0
+        for neighbor in nodes_remaining:
+            if neighbor.distance < min_distance:
+                min_distance $\gets$ neighbor.distance
+                closest_neighbor $\gets$ neighbor
+        tour $\gets$ closest_neighbor
+        node_remaining.remove(closest_neighbor)
+    return tour
+
 get_neighbor(curr_state):
 	with probability 0.37:
-		flip a contiguous chuck of the curr_state
+		flip a contiguous chunk of the curr_state
 	otherwise:
 		swap 2 consecutive elements $\text{i}$n the curr_state
 	return the resulting state
